@@ -31,7 +31,7 @@ export function WeeklyRevenueAreaChart({
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="thu"
+            dataKey="dayOfWeek"
             axisLine={false}
             tickLine={false}
             stroke="#9ca3af"
@@ -40,7 +40,7 @@ export function WeeklyRevenueAreaChart({
           <Tooltip formatter={(v) => `${v.toLocaleString("vi-VN")} ₫`} />
           <Area
             type="monotone"
-            dataKey="doanhThu"
+            dataKey="revenue"
             stroke="#ec4899"
             fill="url(#grad)"
             strokeWidth={2}

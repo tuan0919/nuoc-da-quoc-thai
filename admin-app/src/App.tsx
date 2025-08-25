@@ -2,10 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 // Pages
-import { HomePage, NotFoundPage } from "./pages";
+import { DashboardPage, HomePage, NotFoundPage } from "./pages";
 
 // Feature Pages
-import { DashboardPage } from "./features/dashboard/pages";
 import { CustomerListPage, CustomerDetailPage } from "./features/customer-management/pages";
 import { EmployeeListPage } from "./features/employee-management/pages";
 import { OrderListPage } from "./features/order-management/pages";
