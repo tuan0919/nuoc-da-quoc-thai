@@ -1,20 +1,38 @@
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
+// Pages
+import { HomePage, NotFoundPage } from "./pages";
+
+// Feature Pages
+import { DashboardPage } from "./features/dashboard/pages";
+import { CustomerListPage, CustomerDetailPage } from "./features/customer-management/pages";
+import { EmployeeListPage } from "./features/employee-management/pages";
+import { OrderListPage } from "./features/order-management/pages";
+
 function App() {
   return (
     <>
       <AnimatePresence mode="wait">
         <Routes>
-          <Route index element={<div>
-            <h1>Chào mừng đến với Admin App</h1>
-            <p>Đây là trang chủ của ứng dụng quản trị.</p>
-          </div>} />
-          <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="/customers" element={<div>Quản lý khách hàng</div>} />
-          <Route path="/employees" element={<div>Quản lý nhân viên</div>} />
-          <Route path="/orders" element={<div>Quản lý đơn hàng</div>} />
-          <Route path="*" element={<div>404 - Trang không tìm thấy</div>} />
+          {/* Home */}
+          <Route index element={<HomePage />} />
+
+          {/* Dashboard */}
+          <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* Customer Management */}
+          <Route path="/customers" element={<CustomerListPage />} />
+          <Route path="/customers/:id" element={<CustomerDetailPage />} />
+
+          {/* Employee Management */}
+          <Route path="/employees" element={<EmployeeListPage />} />
+
+          {/* Order Management */}
+          <Route path="/orders" element={<OrderListPage />} />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AnimatePresence>
     </>
