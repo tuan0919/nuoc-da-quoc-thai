@@ -6,9 +6,6 @@ export * from './components/StatCard';
 export * from './components/WeeklyRevenueAreaChart';
 export * from './components/animations';
 
-// API
-export * from './api/queries';
-
 // Stores
 export * from './stores/dashboard.ui.store';
 

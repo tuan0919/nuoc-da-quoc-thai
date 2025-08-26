@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 // Pages
-import { DashboardPage, HomePage, NotFoundPage } from "./pages";
+import { DashboardPage, HomePage, LoginPage, NotFoundPage } from "./pages";
 
 // Feature Pages
 import { CustomerListPage, CustomerDetailPage } from "./features/customer-management/pages";
@@ -15,7 +15,8 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           {/* Home */}
-          <Route index element={<HomePage />} />
+          <Route element={<HomePage />} />
+          <Route path="/login" index element={<LoginPage />} />
 
           {/* Dashboard */}
           <Route path="/dashboard" element={<DashboardPage />} />
