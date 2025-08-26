@@ -11,6 +11,7 @@ import { useLoginStore } from "../stores/login.ui.store";
 import { useMutation } from "@tanstack/react-query";
 import { AuthService } from "../services/AuthService";
 import { LogInIcon } from "lucide-react";
+import { useAuthenticateStore } from "@/shared/auth.store";
 
 const FormSchema = z.object({
     username: z.string().min(2, {
@@ -23,7 +24,8 @@ const FormSchema = z.object({
 
 export function LoginForm({ className }: { className?: string }) {
     const navigate = useNavigate();
-    const { username, password, setUsername, setPassword, reset, setRefreshToken, setToken } = useLoginStore();
+    const { username, password, setUsername, setPassword, reset } = useLoginStore();
+    const {setToken, setRefreshToken, setUsername: setAuthUsername } = useAuthenticateStore();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -38,6 +40,7 @@ export function LoginForm({ className }: { className?: string }) {
         onSuccess: ({ token, refreshToken }) => {
             setToken(token);
             setRefreshToken(refreshToken);
+            setAuthUsername(username);
         },
         onError: (err) => {
             console.error("Login failed", err);
@@ -46,7 +49,7 @@ export function LoginForm({ className }: { className?: string }) {
     const onSubmit = form.handleSubmit(async (values) => {
         login.mutate(values);
         reset();
-        navigate("/dashboard");
+        navigate("/");
     });
     return (
         <div className={className}>

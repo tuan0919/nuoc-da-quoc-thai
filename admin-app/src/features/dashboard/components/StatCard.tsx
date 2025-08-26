@@ -1,6 +1,4 @@
 import { JSX } from "react";
-import { motion } from "framer-motion";
-// StatCard component
 export function StatCard({
   icon,
   title,
@@ -17,10 +15,8 @@ export function StatCard({
   subtitle?: string;
 }) {
   return (
-    <motion.div
+    <div
       className={`bg-gradient-to-br ${gradient} text-white rounded-xl shadow flex flex-col items-start justify-center p-3 cursor-pointer`}
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-2 mb-1">
         {icon}
@@ -33,6 +29,6 @@ export function StatCard({
           {subtitle}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

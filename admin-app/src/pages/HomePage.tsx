@@ -1,5 +1,8 @@
+import { AuthService } from '@/features/login';
+import { useAuthenticateStore } from '@/shared/auth.store';
+import { useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const HomePage = () => {
   const features = [
@@ -32,6 +35,23 @@ export const HomePage = () => {
       color: 'bg-orange-500'
     }
   ];
+
+  const { token } = useAuthenticateStore();
+  const navigate = useNavigate();
+  if (!token) {
+    navigate('/login');
+  } else {
+    useMutation({
+      mutationKey: ['validateToken', token],
+      mutationFn: () => AuthService.validateToken(token),
+      gcTime: 1000 * 60 * 10, // 10 phút
+      onSuccess: (isValid) => {
+        if (!isValid) {
+          navigate('/login');
+        }
+      }
+    });
+  }
 
   return (
     <motion.div

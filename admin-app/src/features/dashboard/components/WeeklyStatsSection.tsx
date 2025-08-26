@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   FaMoneyBillWave,
   FaArrowUp,
@@ -6,16 +5,12 @@ import {
   FaIceCream,
   FaCube,
 } from "react-icons/fa6";
-import { containerVariants } from "./animations";
 import { StatCard } from "./StatCard";
 import { WeeklyStats } from "@/features/dashboard/types";
 
 export const WeeklyStatsSection = ({ stats }: { stats?: WeeklyStats }) => {
   return (
-    <motion.section
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
+    <section
       className="mb-4"
     >
       <h2 className="mb-2 font-semibold text-gray-700 text-sm sm:text-base">
@@ -62,6 +57,6 @@ export const WeeklyStatsSection = ({ stats }: { stats?: WeeklyStats }) => {
           value={`${stats?.totalDaBi.toLocaleString("vi-VN")} bịch`}
         />
       </div>
-    </motion.section>
+    </section>
   );
 };

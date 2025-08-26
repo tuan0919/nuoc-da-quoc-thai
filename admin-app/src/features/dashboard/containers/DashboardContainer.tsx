@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { WeeklyStatsSection } from "../components/WeeklyStatsSection";
 import { WeeklyChartSection } from "../components/WeeklyChartSection";
 import { Navbar } from "../components/Navbar";
@@ -35,11 +34,8 @@ export const DashboardContainer = () => {
     return (
         <div className="min-h-screen flex flex-col bg-[url('https://maxartkiller.com/website/gomobileux2/HTML/assets/img/bgshapes.png')]">
             <Navbar />
-            <motion.main
+            <main
                 className="flex-1 overflow-y-auto px-3 pt-4 pb-24 sm:px-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
             >
                 {stats.isLoading && <LoadingView text="Tải dữ liệu thống kê tuần"/>}
                 {stats.isError && <ErrorView/>}
@@ -48,7 +44,7 @@ export const DashboardContainer = () => {
                 {revenue.isLoading && <LoadingView text="Tải dữ liệu biểu đồ doanh thu"/>}
                 {revenue.isError && <ErrorView/>}
                 {revenue.isSuccess && revenue.data && <WeeklyChartSection chartData={revenue.data?.result || []} />}
-            </motion.main>
+            </main>
         </div>
     );
 };
