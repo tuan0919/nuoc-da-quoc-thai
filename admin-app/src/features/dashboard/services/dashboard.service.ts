@@ -1,7 +1,7 @@
 import { WeeklyRevenueChart, WeeklyStats } from "@/features/dashboard/types";
-import { delay } from "@/shared/delay";
+import { delay } from "@/shared/utils/delay";
 import { WEEKLY_REVENUE, WEEKLY_STATS } from "@/features/dashboard/data/dashboard.mock";
-import { ApiPageResponse } from "@/shared/common.dto";
+import { ApiPageResponse } from "@/shared/types/common.dto";
 
 export class DashboardService {
     static async getWeeklyRevenue() : Promise<ApiPageResponse<WeeklyRevenueChart[]>> {

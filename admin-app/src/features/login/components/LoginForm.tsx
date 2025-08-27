@@ -7,11 +7,9 @@ import { TbLockPassword } from "react-icons/tb";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginStore } from "../stores/login.ui.store";
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "../services/AuthService";
+import { usePassword, useSetPassword, useSetUsername, useUsername } from "../stores/login.ui.store";
 import { LogInIcon } from "lucide-react";
-import { useAuthenticateStore } from "@/shared/auth.store";
+import { useLoginMutation } from "../query/mutations";
 
 const FormSchema = z.object({
     username: z.string().min(2, {
@@ -25,34 +23,24 @@ const FormSchema = z.object({
 type FormValues = z.infer<typeof FormSchema>;
 
 export function LoginForm({ className }: { className?: string }) {
-
     const navigate = useNavigate();
-    const { username: uStore, password: pStore, setUsername, setPassword, reset } = useLoginStore();
-    const { setToken, setRefreshToken, setUsername: setAuthUsername } = useAuthenticateStore();
-
+    const [uStore, pStore, setUsername, setPassword] = [
+        useUsername(),
+        usePassword(),
+        useSetUsername(),
+        useSetPassword()
+    ]
     const form = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
-        defaultValues: { username: uStore, password: pStore },
+        defaultValues: { username: uStore || '', password: pStore || '' },
     });
 
-    const login = useMutation({
-        mutationKey: ["login"],
-        mutationFn: (values: FormValues) => AuthService.login(values.username, values.password),
-        onSuccess: ({ token, refreshToken }, variables) => {
-            setToken(token);
-            setRefreshToken(refreshToken);
-            setAuthUsername(variables.username);
-            reset();
-            navigate("/");
-        },
-        onError: (err) => {
-            console.error("Login failed", err);
-        },
-    });
+    const loginMutation = useLoginMutation()
 
     const onSubmit = form.handleSubmit(async (values) => {
         setUsername(values.username);
-        await login.mutateAsync(values); // chờ kết quả để điều hướng trong onSuccess
+        await loginMutation.mutateAsync(values);
+        navigate('/')
     });
 
     return (

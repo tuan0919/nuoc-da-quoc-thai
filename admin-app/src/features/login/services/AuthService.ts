@@ -18,7 +18,7 @@ export class AuthService {
         }
         throw new Error("Tài khoản hoặc mật khẩu không chính xác");
     }
-    static async validateToken(token: string) : Promise<boolean> {
+    static async validateToken(token?: string) : Promise<boolean> {
         return token === LOGIN_MOCK.token;
     }
 }
