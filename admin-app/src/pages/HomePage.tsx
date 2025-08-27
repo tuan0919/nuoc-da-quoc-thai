@@ -1,8 +1,8 @@
 import { AuthService } from '@/features/login';
 import { useAuthenticateStore } from '@/shared/auth.store';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 export const HomePage = () => {
   const features = [
@@ -36,21 +36,23 @@ export const HomePage = () => {
     }
   ];
 
-  const { token } = useAuthenticateStore();
-  const navigate = useNavigate();
-  if (!token) {
-    navigate('/login');
-  } else {
-    useMutation({
-      mutationKey: ['validateToken', token],
-      mutationFn: () => AuthService.validateToken(token),
-      gcTime: 1000 * 60 * 10, // 10 phút
-      onSuccess: (isValid) => {
-        if (!isValid) {
-          navigate('/login');
-        }
-      }
-    });
+  const token = useAuthenticateStore(s => s.token);
+  if (!token) return <Navigate to="/login" replace />;
+
+  const { data: isValid, isLoading, isError } = useQuery({
+    queryKey: ["validateToken", token],
+    queryFn: () => AuthService.validateToken(token),
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000,
+    retry: 0,
+  });
+
+  if (isLoading) {
+    return <div className="p-6">Đang kiểm tra phiên đăng nhập…</div>;
+  }
+  
+  if (isError || isValid === false) {
+    return <Navigate to="/login" replace />;
   }
 
   return (

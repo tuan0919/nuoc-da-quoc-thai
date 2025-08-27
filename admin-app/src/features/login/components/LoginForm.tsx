@@ -22,35 +22,39 @@ const FormSchema = z.object({
     }),
 });
 
+type FormValues = z.infer<typeof FormSchema>;
+
 export function LoginForm({ className }: { className?: string }) {
+
     const navigate = useNavigate();
-    const { username, password, setUsername, setPassword, reset } = useLoginStore();
-    const {setToken, setRefreshToken, setUsername: setAuthUsername } = useAuthenticateStore();
-    const form = useForm<z.infer<typeof FormSchema>>({
+    const { username: uStore, password: pStore, setUsername, setPassword, reset } = useLoginStore();
+    const { setToken, setRefreshToken, setUsername: setAuthUsername } = useAuthenticateStore();
+
+    const form = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
-        defaultValues: {
-            username: username,
-            password: password,
-        },
+        defaultValues: { username: uStore, password: pStore },
     });
+
     const login = useMutation({
-        mutationKey: ["login", username, password],
-        mutationFn: (values: { username: string; password: string }) =>
-            AuthService.login(values.username, values.password),
-        onSuccess: ({ token, refreshToken }) => {
+        mutationKey: ["login"],
+        mutationFn: (values: FormValues) => AuthService.login(values.username, values.password),
+        onSuccess: ({ token, refreshToken }, variables) => {
             setToken(token);
             setRefreshToken(refreshToken);
-            setAuthUsername(username);
+            setAuthUsername(variables.username);
+            reset();
+            navigate("/");
         },
         onError: (err) => {
             console.error("Login failed", err);
-        }
+        },
     });
+
     const onSubmit = form.handleSubmit(async (values) => {
-        login.mutate(values);
-        reset();
-        navigate("/");
+        setUsername(values.username);
+        await login.mutateAsync(values); // chờ kết quả để điều hướng trong onSuccess
     });
+
     return (
         <div className={className}>
             <Form {...form}>
@@ -69,7 +73,7 @@ export function LoginForm({ className }: { className?: string }) {
                                                 placeholder="Username/Email"
                                                 className="pl-12 pr-4 py-4 border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 rounded-xl text-base shadow-sm"
                                                 {...field}
-                                                value={username}
+                                                value={field.value}
                                                 onChange={(e) => {
                                                     field.onChange(e);
                                                     setUsername(e.target.value)
@@ -99,7 +103,7 @@ export function LoginForm({ className }: { className?: string }) {
                                                 placeholder="Password"
                                                 className="pl-12 pr-4 py-4 border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 rounded-xl text-base shadow-sm"
                                                 {...field}
-                                                value={password}
+                                                value={field.value}
                                                 onChange={(e) => {
                                                     field.onChange(e);
                                                     setPassword(e.target.value)
