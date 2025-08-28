@@ -1,42 +1,22 @@
-import { Route, Routes } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-
-// Pages
-import { DashboardPage, HomePage, LoginPage, NotFoundPage } from "./pages";
-
-// Feature Pages
-import { CustomerListPage, CustomerDetailPage } from "./features/customer-management/pages";
-import { EmployeeListPage } from "./features/employee-management/pages";
-import { OrderListPage } from "./features/order-management/pages";
+import { AnimatePresence } from 'framer-motion'
+import { Route, Routes } from 'react-router-dom'
+import { HomePage, DashboardPage, LoginPage, NotFoundPage } from './pages'
+import { RequireAuth } from './shared/components/RequiredAuth'
 
 function App() {
   return (
-    <>
-      <AnimatePresence mode="wait">
-        <Routes>
-          {/* Home */}
+    <AnimatePresence mode="wait">
+      <Routes>
+        <Route element={<RequireAuth />}>
           <Route index element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
 
-          {/* Dashboard */}
-          <Route path="/dashboard" element={<DashboardPage />} />
-
-          {/* Customer Management */}
-          <Route path="/customers" element={<CustomerListPage />} />
-          <Route path="/customers/:id" element={<CustomerDetailPage />} />
-
-          {/* Employee Management */}
-          <Route path="/employees" element={<EmployeeListPage />} />
-
-          {/* Order Management */}
-          <Route path="/orders" element={<OrderListPage />} />
-
-          {/* 404 */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </AnimatePresence>
-    </>
-  );
+        <Route path="login" element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </AnimatePresence>
+  )
 }
 
 export default App;

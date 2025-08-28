@@ -1,4 +1,4 @@
-import { useSetRefreshToken, useSetToken, useSetUsername, useUsername } from "@/shared/stores/auth.store"
+import { useLogout, useRefreshToken, useSetRefreshToken, useSetToken, useSetUsername, useToken, useUsername } from "@/shared/stores/auth.store"
 import { useReset } from "../stores/login.ui.store"
 import { useMutation } from "@tanstack/react-query"
 import { AuthService } from "../services/AuthService";
@@ -19,5 +19,20 @@ export const useLoginMutation = () => {
       setAuthUsername(variables.username)
       reset()
     },
+  })
+}
+
+export const useLogoutMutation = () => {
+  const token = useToken();
+  const refreshToken = useRefreshToken();
+  const logout = useLogout();
+  return useMutation({
+    mutationKey: ['logout', token, refreshToken],
+    mutationFn: () => {
+      return AuthService.invalidateToken()
+    },
+    onSuccess: () => {
+      logout();
+    }
   })
 }

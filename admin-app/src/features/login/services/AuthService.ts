@@ -21,4 +21,7 @@ export class AuthService {
     static async validateToken(token?: string) : Promise<boolean> {
         return token === LOGIN_MOCK.token;
     }
+    static async invalidateToken(token?: string, refreshToken?: string) : Promise<boolean> {
+        return token === LOGIN_MOCK.token && refreshToken === LOGIN_MOCK.refreshToken;
+    }
 }

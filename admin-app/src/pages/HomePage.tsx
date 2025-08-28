@@ -1,17 +1,9 @@
 import { ManagementSection } from '@/features/home';
-import { useValidateTokenQuery } from '@/features/login/query/queries';
 import { BottomNav } from '@/shared/components/BottomNav';
 import { TopNav } from '@/shared/components/TopNav';
-import { Navigate } from 'react-router-dom';
 
 export const HomePage = () => {
-
-  const validateQuery = useValidateTokenQuery();
-
-  if (!validateQuery.isLoading && !validateQuery.data) {
-    return <Navigate to="/login" replace />;
-  }
-
+  
   return (
     <div className="min-h-screen flex flex-col bg-[url('https://maxartkiller.com/website/gomobileux2/HTML/assets/img/bgshapes.png')]">
       <TopNav />

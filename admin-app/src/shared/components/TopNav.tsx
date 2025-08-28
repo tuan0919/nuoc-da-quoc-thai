@@ -19,10 +19,11 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useLogout } from "../stores/auth.store";
 
 export function TopNav() {
   const [open, setOpen] = useState(false);
-
+  const logout = useLogout();
   return (
     <header className="sticky top-0 z-30 w-full bg-white/40 backdrop-blur-lg border-b border-white/30 shadow-md rounded-b-2xl px-4 py-3 flex items-center justify-between">
       {/* Menu trigger */}
@@ -118,7 +119,7 @@ export function TopNav() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    onClick={() => logout()}
                     className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-white/10 transition"
                   >
                     <FaSignOutAlt className="text-lg" />
