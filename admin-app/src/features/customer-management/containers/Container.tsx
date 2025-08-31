@@ -1,21 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import { FiSearch, FiLoader, FiUserPlus } from "react-icons/fi";
 import { CustomerCard } from "../components/CustomerCard";
-import { useDoFilterByKeyword, useFilteredCustomers, useFilterKeyword, useSetFilterKeyword } from "../stores/customer-management.ui.store";
+import { useFilterKeyword, useSetFilterKeyword } from "../stores/customer-management.ui.store";
 import { getAllCustomersQueryOtpions } from "../query/query";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { Customer } from "@/shared/types/customer";
+
+const normalize = (s?: string) =>
+  (s ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, ""); // bỏ dấu tiếng Việt để tìm “ko dấu”
 
 export function Container() {
     const navigate = useNavigate();
-    const [filterKeyWord, setFilterKeyWord, filteredCustomers, doFilterByKeyword] = [
+    const [filterKeyWord, setFilterKeyWord] = [
         useFilterKeyword(),
         useSetFilterKeyword(),
-        useFilteredCustomers(),
-        useDoFilterByKeyword(),
     ]
     const { data, isPending, isError, refetch, error, isSuccess } = useQuery(
         getAllCustomersQueryOtpions
     );
+    const customers = useMemo(() => {
+        const kw = normalize(filterKeyWord);
+        const matcher = (c : Customer) => c.customerName.toLowerCase().includes(kw);
+        return (data?.result || []).filter(matcher)
+    }, [data, filterKeyWord])
     return (
         <div
             className="max-w-7xl mx-auto"
@@ -27,7 +38,6 @@ export function Container() {
                     value={filterKeyWord}
                     onChange={(e) => {
                         setFilterKeyWord(e.target.value)
-                        doFilterByKeyword(data?.result || []); 
                     }}
                     className="w-full pl-10 pr-4 py-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm"
                 />
@@ -61,7 +71,7 @@ export function Container() {
 
             {isSuccess && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {(filteredCustomers || []).map((customer) => (
+                    {customers.map((customer) => (
                         <CustomerCard
                             key={customer.customerId}
                             customer={customer}
