@@ -1,21 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
+import { queryOptions } from '@tanstack/react-query'
 import { DashboardService } from '../services/dashboard.service'
 
-// Hook query lấy stats
-export const useWeeklyStats = () => {
-  return useQuery({
+export const getWeeklyStatsQueryOptions = queryOptions({
     queryKey: ['stats'],
     queryFn: DashboardService.getWeeklyStats,
   })
-}
 
-// Hook query lấy revenue phụ thuộc stats
-export const useWeeklyRevenue = () => {
-  const statsQuery = useWeeklyStats()
-
-  return useQuery({
+export const getWeeklyRevenueQueryOptions = queryOptions({
     queryKey: ['revenue'],
     queryFn: () => DashboardService.getWeeklyRevenue(),
-    enabled: !!statsQuery,
   })
-}

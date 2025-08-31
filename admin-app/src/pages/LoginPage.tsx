@@ -1,9 +1,11 @@
 import { LoginForm } from "@/features/login";
-import { useValidateTokenQuery } from "@/features/login/query/queries";
+import { getValidateTokenQueryOptions } from "@/features/login/query/queries";
+import { useToken } from "@/shared/stores/auth.store";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
 
 export const LoginPage = () => {
-  const validateQuery = useValidateTokenQuery();
+  const validateQuery = useQuery(getValidateTokenQueryOptions(useToken()));
   if (validateQuery.isLoading) return <div>Loading...</div>;
   if (validateQuery.data) return <Navigate to="/" />;
   return (

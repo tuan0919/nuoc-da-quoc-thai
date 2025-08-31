@@ -1,7 +1,8 @@
 import { WeeklyStatsSection } from "../components/WeeklyStatsSection";
 import { WeeklyChartSection } from "../components/WeeklyChartSection";
 import { Navbar } from "../components/Navbar";
-import { useWeeklyStats, useWeeklyRevenue } from "../query/queries";
+import { useQuery } from "@tanstack/react-query";
+import { getWeeklyRevenueQueryOptions, getWeeklyStatsQueryOptions } from "../query/queries";
 
 function LoadingView({ text }: { text: string }) {
     return (
@@ -19,8 +20,11 @@ function ErrorView() {
 }
 
 export const DashboardContainer = () => {
-    const stats = useWeeklyStats()
-    const revenue = useWeeklyRevenue()
+    const stats = useQuery(getWeeklyStatsQueryOptions)
+    const revenue = useQuery({
+        ...getWeeklyRevenueQueryOptions,
+        enabled: !!stats.isSuccess
+    })
     return (
         <div className="min-h-screen flex flex-col bg-[url('https://maxartkiller.com/website/gomobileux2/HTML/assets/img/bgshapes.png')]">
             <Navbar />
