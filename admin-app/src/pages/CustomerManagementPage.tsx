@@ -1,5 +1,4 @@
-import { Navbar } from "@/features/customer-management/components/Navbar"
-import { Container } from "@/features/customer-management/containers/Container"
+import { Container, Navbar } from "@/features/customer-management"
 
 export const CustomerManagementPage = () => {
     return (
