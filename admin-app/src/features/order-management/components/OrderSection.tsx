@@ -4,7 +4,7 @@ import { Pagination } from "@/shared/components/Pagination";
 import { Order } from "@/shared/types/order";
 import { CalendarChooser } from "@/shared/components/CalendarChooser";
 import { OrderCard } from "./OrderCard";
-import { useSelectedDate, useSelectedOrder, useSetSelectedDate, useSetSelectedOrder } from "../store/order-management.ui.store";
+import { useSelectedDate, useSelectedOrder, useSetSelectedDate, useSetSelectedOrder } from "../stores/order-management.ui.store";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrdersQueryOptions } from "../query/queries";
 

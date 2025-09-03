@@ -36,7 +36,7 @@ const managementItems = [
     text: "Quản lý hóa đơn",
     key: "order",
     gradient: "from-yellow-400 to-orange-500",
-    to: "/order-management",
+    to: "/orders",
   },
 ];
 
