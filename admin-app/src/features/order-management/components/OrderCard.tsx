@@ -10,6 +10,7 @@ import {
 import { FaBoxesPacking, FaTruckFast } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 import { Order } from "@/shared/types/order";
+import { useLongPress } from "@/shared/hooks/useLongPress";
 
 const PRODUCT_TYPE_LABELS: Record<Order["orderType"], string> = {
   "ĐÁ CÂY": "Đá cây",
@@ -26,7 +27,7 @@ export function OrderCard({ order, isSelected, onSelect }: OrderCardProps) {
   const unitPrice = order.price || 0;
   const totalPrice = unitPrice * (order.amount || 0);
   const productTypeName = PRODUCT_TYPE_LABELS[order.orderType] || "Sản phẩm";
-
+  const longPress = useLongPress(() => onSelect(order), 500)
   return (
     <div
       className={cn(
@@ -35,7 +36,7 @@ export function OrderCard({ order, isSelected, onSelect }: OrderCardProps) {
           ? "border-blue-500 shadow-lg shadow-blue-100"
           : "border-gray-200 hover:border-blue-300"
       )}
-      onClick={() => onSelect(order)}
+      {... longPress}
     >
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-bold text-slate-800 text-lg">

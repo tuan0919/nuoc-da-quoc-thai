@@ -4,7 +4,7 @@ import { Pagination } from "@/shared/components/Pagination";
 import { Order } from "@/shared/types/order";
 import { CalendarChooser } from "@/shared/components/CalendarChooser";
 import { OrderCard } from "./OrderCard";
-import { useSelectedDate, useSelectedOrder, useSetSelectedDate, useSetSelectedOrder } from "../stores/order-management.ui.store";
+import { useSelectedDate, useSelectedOrder, useSetIsActionModalOpen, useSetSelectedDate, useSetSelectedOrder } from "../stores/order-management.ui.store";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrdersQueryOptions } from "../query/queries";
 
@@ -13,12 +13,14 @@ export function OrderSection() {
     selectedDate,
     setSelectedDate,
     selectedOrder,
-    setSelectedOrder
+    setSelectedOrder,
+    setIsActionModalOpen
   ] = [
       useSelectedDate(),
       useSetSelectedDate(),
       useSelectedOrder(),
       useSetSelectedOrder(),
+      useSetIsActionModalOpen(),
     ]
   const {data, isLoading} = useQuery(getAllOrdersQueryOptions());
   return (
@@ -68,10 +70,13 @@ export function OrderSection() {
             ) : (
               (data?.result || []).map((order: Order) => (
                 <OrderCard
-                  key={order.customer.id}
+                  key={order.id}
                   order={order}
                   isSelected={selectedOrder?.id === order.id}
-                  onSelect={setSelectedOrder}
+                  onSelect={(order) => {
+                    setSelectedOrder(order);
+                    setIsActionModalOpen(true);
+                  }}
                 />
               ))
             )}
