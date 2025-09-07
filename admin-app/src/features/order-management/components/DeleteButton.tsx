@@ -1,7 +1,7 @@
-export const DeleteButton = ({ title }: { title: string }) => {
+export const DeleteButton = ({ title, onClick }: { title: string, onClick?: () => void }) => {
     return (
         <button
-            onClick={undefined}
+            onClick={onClick}
             className="shadow w-full flex items-center gap-3 p-3 bg-gradient-to-r from-red-50 to-red-100 text-red-700 rounded-xl hover:from-red-100 hover:to-red-200 transition-all duration-200 font-medium"
         >
             <svg

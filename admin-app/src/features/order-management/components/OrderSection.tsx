@@ -7,8 +7,6 @@ import { OrderCard } from "./OrderCard";
 import { useSelectedDate, useSelectedOrder, useSetIsActionModalOpen, useSetSelectedDate, useSetSelectedOrder } from "../stores/order-management.ui.store";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrdersQueryOptions } from "../query/queries";
-import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
-import { useState } from "react";
 
 export function OrderSection() {
   const [
@@ -27,7 +25,6 @@ export function OrderSection() {
   const { data, isLoading } = useQuery({
     ...getAllOrdersQueryOptions(selectedDate),
   });
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   return (
     <>
       <section className="px-2 sm:px-4 mb-4">
@@ -99,11 +96,6 @@ export function OrderSection() {
           )}
         </div>
       </section>
-      <ConfirmDialog
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => setIsConfirmModalOpen(false)}
-        open={isConfirmModalOpen}
-      />
     </>
   );
 }

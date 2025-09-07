@@ -20,7 +20,7 @@ interface ConfirmDialogState {
   close: () => void;
 }
 
-const useConfirmDialogStore = create<ConfirmDialogState>((set) => ({
+export const useConfirmDialogStore = create<ConfirmDialogState>((set) => ({
   open: false,
   title: "Xác nhận",
   confirmLabel: "Xác nhận",
