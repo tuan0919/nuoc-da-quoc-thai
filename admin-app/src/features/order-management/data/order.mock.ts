@@ -7,7 +7,7 @@ export const MOCK_ORDERS: Order[] = [
     payStatus: "CHƯA THANH TOÁN",
     orderType: "ĐÁ BI",
     price: 12000,
-    amount: 12000,
+    amount: 5,
     shipper: {
       id: 1,
       name: "Nguyễn Văn A",
@@ -27,7 +27,7 @@ export const MOCK_ORDERS: Order[] = [
     payStatus: "CHƯA THANH TOÁN",
     orderType: "ĐÁ BI",
     price: 12000,
-    amount: 12000,
+    amount: 5,
     shipper: {
       id: 1,
       name: "Nguyễn Văn A",
@@ -47,7 +47,7 @@ export const MOCK_ORDERS: Order[] = [
     payStatus: "CHƯA THANH TOÁN",
     orderType: "ĐÁ BI",
     price: 12000,
-    amount: 12000,
+    amount: 5,
     shipper: {
       id: 1,
       name: "Nguyễn Văn A",

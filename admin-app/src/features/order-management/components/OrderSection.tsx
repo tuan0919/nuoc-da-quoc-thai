@@ -7,6 +7,8 @@ import { OrderCard } from "./OrderCard";
 import { useSelectedDate, useSelectedOrder, useSetIsActionModalOpen, useSetSelectedDate, useSetSelectedOrder } from "../stores/order-management.ui.store";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrdersQueryOptions } from "../query/queries";
+import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { useState } from "react";
 
 export function OrderSection() {
   const [
@@ -22,7 +24,10 @@ export function OrderSection() {
       useSetSelectedOrder(),
       useSetIsActionModalOpen(),
     ]
-  const {data, isLoading} = useQuery(getAllOrdersQueryOptions());
+  const { data, isLoading } = useQuery({
+    ...getAllOrdersQueryOptions(selectedDate),
+  });
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   return (
     <>
       <section className="px-2 sm:px-4 mb-4">
@@ -34,7 +39,7 @@ export function OrderSection() {
             <div className="z-20">
               <CalendarChooser
                 date={selectedDate}
-                onChange={setSelectedDate}
+                onChange={(setSelectedDate)}
               />
             </div>
             <button
@@ -62,7 +67,7 @@ export function OrderSection() {
           )}
 
           <div>
-            {data?.totalPages === 0 ? (
+            {data?.total === 0 ? (
               <div className="text-center py-8">
                 <FaTruckFast className="w-12 h-12 mx-auto text-gray-300 mb-2" />
                 <p className="text-gray-500">Không có đơn hàng nào.</p>
@@ -88,12 +93,17 @@ export function OrderSection() {
               <Pagination
                 currentPage={0}
                 totalPages={5}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </div>
           )}
         </div>
       </section>
+      <ConfirmDialog
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={() => setIsConfirmModalOpen(false)}
+        open={isConfirmModalOpen}
+      />
     </>
   );
 }
