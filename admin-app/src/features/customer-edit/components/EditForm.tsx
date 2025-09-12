@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useCustomerEditStore } from "../stores/customer-edit.ui.store";
 
 // Schema for form validation
 const FormSchema = z.object({
@@ -28,29 +28,26 @@ const FormSchema = z.object({
 });
 
 type FormValues = z.infer<typeof FormSchema>;
-
 export const EditForm = () => {
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
+  const customer = useCustomerEditStore((s) => s.customer);
   const form = useForm<FormValues>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      customerName: "",
-      address: "",
-      phoneNumber: "",
-      price1: 0,
-      price2: 0,
-      avatar: "",
-    },
-  });
-
+  resolver: zodResolver(FormSchema),
+  defaultValues: {
+    customerName: customer?.customerName || "",
+    address: customer?.address || "",
+    phoneNumber: customer?.phoneNumber || "",
+    price1: customer?.price1 || 0,
+    price2: customer?.price2 || 0,
+    avatar: customer?.avatar || "",
+  },
+});
   return (
     <div className="flex-1 px-2 py-4 sm:px-4">
       <div className="bg-white/70 rounded-2xl shadow p-3 sm:p-6">
         <div className="flex flex-col items-center mb-6">
           <img
             src={
-              avatarPreview ||
+              customer?.avatar ||
               `https://i.pravatar.cc/150?u=demo`
             }
             className="w-24 h-24 rounded-full object-cover border-4 border-white dark:border-gray-600 shadow-md mb-4"

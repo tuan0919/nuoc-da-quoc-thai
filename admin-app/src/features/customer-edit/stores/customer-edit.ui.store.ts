@@ -6,10 +6,7 @@ type CustomerEditStore = {
     setCustomer: (customer: Customer) => void
 };
 
-const useCustomerEditStore = create<CustomerEditStore>((set) => ({
+export const useCustomerEditStore = create<CustomerEditStore>((set) => ({
     customer: undefined,
     setCustomer: (customer: Customer) => set({ customer })
 }))
-
-const useSetCustomer = () => useCustomerEditStore((s) => s.setCustomer);
-export { useSetCustomer }

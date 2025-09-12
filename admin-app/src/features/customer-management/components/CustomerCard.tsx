@@ -76,7 +76,7 @@ export const CustomerCard = ({ customer, onDelete }: CustomerCardProps) => {
         </Link>
         <button
           onClick={() =>
-            navigate(`/admin/customer-management/edit/${customer.customerId}`)
+            navigate(`/customers/${customer.customerId}/edit`)
           }
           className="w-10 h-10 rounded-full flex items-center justify-center bg-green-100/80 dark:bg-green-900/50 text-green-600 dark:text-green-300 hover:bg-green-200/80 dark:hover:bg-green-800/60 transition-all duration-300 transform hover:scale-110"
         >
